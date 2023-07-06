@@ -60,13 +60,13 @@ def userDetails(request,userId):
             return JsonResponse(data,status=200)
         
         elif request.method=='GET':
-            user = User.objects.get(id=userId)
             data = {
-                'user_id': user.id,
+                'userId': user.id,
                 'username': user.username,
                 'email': user.email,
             }
             return JsonResponse(data,status=200)
+        
     
     except User.DoesNotExist():
         return JsonResponse({'error': 'User not found'}, status=404)

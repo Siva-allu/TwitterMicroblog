@@ -80,8 +80,27 @@ DATABASES = {
     'default': dj_database_url.parse('postgres://yoaxcern:il6k2iDqzXAUwRm8yDu6L6pMtjXxB1fe@john.db.elephantsql.com/yoaxcern')
 
 }
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'rediss://redis-14266.c98.us-east-1-4.ec2.cloud.redislabs.com:14266',
+        'OPTIONS': {
+            'PASSWORD': 'M65oMbH34YpUPP1FaGAgrSpK2Ki5bog6',
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    }
+}
 
-
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://default:M65oMbH34YpUPP1FaGAgrSpK2Ki5bog6@redis-14266.c98.us-east-1-4.ec2.cloud.redislabs.com:14266',  # Update with your Redis server details
+#         'OPTIONS': {
+#             'PASSWORD': 'M65oMbH34YpUPP1FaGAgrSpK2Ki5bog6',
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         },
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
