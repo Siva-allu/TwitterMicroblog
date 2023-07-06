@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse,QueryDict
+
 from .models import User
 # Create your views here.
 
@@ -20,23 +21,54 @@ def createUser(request):
         
         # Create the user
         user = User.objects.create(username=username, email=email, password=password)
+        
+        data={
+            'user_id': user.id,
+            'email': user.email
+            }
 
-        return JsonResponse({'user_id': user.id, 'email': user.email}, status=201)
+        return JsonResponse(data, status=201)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-def getUserDetails(request,userId):
+
+
+@csrf_exempt
+def userDetails(request,userId):
     try:
-        user = User.objects.get(id=userId)
-        data = {
-            'user_id': user.id,
-            'username': user.username,
-            'email': user.email,
-            # Include any additional fields you want to retrieve
-        }
-        return JsonResponse(data)
-    except User.DoesNotExist:
+        user=User.objects.get(id=userId)
+        if request.method == 'PUT' or request.method == 'PATCH':
+            body=QueryDict(request.body)
+            username = body.get('username')
+            email = body.get('email')
+            password = body.get('password')
+            if username:
+                user.username = username
+            if email:
+                user.email = email
+            if password:
+                user.password = password
+            
+            user.save()
+            data = {
+                'user_id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'message':'Sucessfully Updated'
+                
+            }
+            return JsonResponse(data,status=200)
+        
+        elif request.method=='GET':
+            user = User.objects.get(id=userId)
+            data = {
+                'user_id': user.id,
+                'username': user.username,
+                'email': user.email,
+            }
+            return JsonResponse(data,status=200)
+    
+    except User.DoesNotExist():
         return JsonResponse({'error': 'User not found'}, status=404)
-
-
+        
         
