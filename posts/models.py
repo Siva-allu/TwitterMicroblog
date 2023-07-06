@@ -6,6 +6,7 @@ class Post(models.Model):
     userId=models.ForeignKey(User,on_delete=models.CASCADE)
     content=models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt=models.DateTimeField(auto_now=True)
     
     
  

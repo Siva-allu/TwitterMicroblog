@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users.views import createUser,userDetails
-
+from posts.views import createPost
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/',createUser,name='createUser'),
     path('api/users/<int:userId>/', userDetails, name='UserDetails'),
+    path('api/posts/',createPost,name='createPost')
 ]
