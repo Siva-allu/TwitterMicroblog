@@ -24,3 +24,19 @@ def createUser(request):
         return JsonResponse({'user_id': user.id, 'email': user.email}, status=201)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def getUserDetails(request,userId):
+    try:
+        user = User.objects.get(id=userId)
+        data = {
+            'user_id': user.id,
+            'username': user.username,
+            'email': user.email,
+            # Include any additional fields you want to retrieve
+        }
+        return JsonResponse(data)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+
+        
